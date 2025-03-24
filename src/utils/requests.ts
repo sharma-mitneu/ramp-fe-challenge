@@ -24,15 +24,14 @@ export const getTransactionsPaginated = ({
     throw new Error("Page cannot be null")
   }
 
-  const start = page * TRANSACTIONS_PER_PAGE
-  const end = start + TRANSACTIONS_PER_PAGE
+  const start = 0
+  const end = page * TRANSACTIONS_PER_PAGE + TRANSACTIONS_PER_PAGE
 
-  if (start > data.transactions.length) {
+  if (page * TRANSACTIONS_PER_PAGE > data.transactions.length) {
     throw new Error(`Invalid page ${page}`)
   }
 
   const nextPage = end < data.transactions.length ? page + 1 : null
-
   return {
     nextPage,
     data: data.transactions.slice(start, end),
@@ -43,7 +42,6 @@ export const getTransactionsByEmployee = ({ employeeId }: RequestByEmployeeParam
   if (!employeeId) {
     throw new Error("Employee id cannot be empty")
   }
-
   return data.transactions.filter((transaction) => transaction.employee.id === employeeId)
 }
 
@@ -55,6 +53,5 @@ export const setTransactionApproval = ({ transactionId, value }: SetTransactionA
   if (!transaction) {
     throw new Error("Invalid transaction to approve")
   }
-
   transaction.approved = value
 }
